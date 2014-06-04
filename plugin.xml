@@ -22,7 +22,7 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            name="View"
+            name="申报项目信息视图"
             class="cn.nbcc.resassistant.views.ProjectView"
             id="cn.nbcc.resassistant.view">
       </view>
