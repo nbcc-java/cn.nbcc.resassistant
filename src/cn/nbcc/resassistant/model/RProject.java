@@ -1,9 +1,10 @@
-package cn.nbcc.resassistant.entities;
+package cn.nbcc.resassistant.model;
 
 import java.util.Date;
 
-public class RAProject {
+public class RProject {
 	
+	static RProject[] NONE = new RProject[]{};
 	private String srcPath;		//申报项目的源文件夹路径
 	private Date startDate;		//项目开始时间
 	private Date endDate;		//项目结束时间
@@ -13,11 +14,17 @@ public class RAProject {
 	private String id;			//项目编号
 
 	
-	public RAProject() {
+	public RProject() {
 		startDate = new Date();
 		status = PStatus.APPLYING;
 		title = "UnKnown";
 		id = "Unknown";
+	}
+
+	public RProject(String title, Date deadline) {
+		this();
+		this.title = title;
+		this.deadlineDate = deadline;
 	}
 
 	/**

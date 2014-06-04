@@ -12,6 +12,8 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.nebula.widgets.datechooser.DateChooserCombo;
 import org.eclipse.nebula.widgets.calendarcombo.CalendarCombo;
 import org.eclipse.nebula.widgets.datechooser.DateChooser;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class NewProjectDialog extends TitleAreaDialog {
 	private Text pathText;
@@ -46,6 +48,14 @@ public class NewProjectDialog extends TitleAreaDialog {
 		pathText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 		
 		Button importBtn = new Button(container, SWT.NONE);
+		importBtn.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				
+				
+			}
+		});
 		GridData gd_importBtn = new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1);
 		gd_importBtn.widthHint = 61;
 		importBtn.setLayoutData(gd_importBtn);

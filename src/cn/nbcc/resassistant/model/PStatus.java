@@ -1,4 +1,4 @@
-package cn.nbcc.resassistant.entities;
+package cn.nbcc.resassistant.model;
 public enum PStatus {
 	UNKNOWN,
 	APPLYING,
