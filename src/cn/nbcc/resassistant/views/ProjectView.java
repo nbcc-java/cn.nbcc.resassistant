@@ -1,23 +1,21 @@
 package cn.nbcc.resassistant.views;
 
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
+import java.text.SimpleDateFormat;
+
+import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.swt.widgets.*;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
+
+import cn.nbcc.resassistant.model.*;
+import cn.nbcc.resassistant.utils.ContextConstants;
 
 public class ProjectView extends ViewPart {
 	public ProjectView() {
 	}
 	public static final String ID = "cn.nbcc.resassistant.view";
+	public static String COLUMN_NAMES[]={"项目编号","申报截止时间","项目名称","创建时间","最后更新时间"};
 
 	private TableViewer viewer;
 
@@ -36,27 +34,59 @@ public class ProjectView extends ViewPart {
 		}
 
 		public Object[] getElements(Object parent) {
-			if (parent instanceof Object[]) {
-				return (Object[]) parent;
+			if (parent instanceof ResearchProject[]) {
+				return (ResearchProject[]) parent;
 			}
 	        return new Object[0];
 		}
 	}
 
-	class ViewLabelProvider extends LabelProvider implements
-			ITableLabelProvider {
+	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider{
 		public String getColumnText(Object obj, int index) {
+			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+			if (obj instanceof ResearchProject) {
+				ResearchProject p = (ResearchProject) obj;
+				ProjectMeta meta = new ProjectMeta(p.getSrcPath());
+				switch (index) {
+				case 0:
+					return p.getId();
+				case 1:
+					return sdf.format(p.getDeadlineDate());
+				case 2:
+					return p.getTitle();
+				case 3:
+					
+					if (meta.getCreateTime()!=null) {
+						return meta.getCreateTime();
+					}else
+						return ContextConstants.UNKNOWN;
+				case 4:
+					if (meta.getLastModify()!=null) {
+						return meta.getLastModify();
+					}else {
+						return ContextConstants.UNKNOWN;
+					}
+					
+				default:
+					break;
+				}
+			}
 			return getText(obj);
 		}
 
-		public Image getColumnImage(Object obj, int index) {
-			return getImage(obj);
+		@Override
+		public Image getColumnImage(Object element, int columnIndex) {
+			return null;
 		}
 
-		public Image getImage(Object obj) {
-			return PlatformUI.getWorkbench().getSharedImages().getImage(
-					ISharedImages.IMG_OBJ_ELEMENT);
-		}
+//		public Image getColumnImage(Object obj, int index) {
+//			return getImage(obj);
+//		}
+//
+//		public Image getImage(Object obj) {
+//			return PlatformUI.getWorkbench().getSharedImages().getImage(
+//					ISharedImages.IMG_OBJ_ELEMENT);
+//		}
 	}
 
 	/**
@@ -65,40 +95,37 @@ public class ProjectView extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
-				| SWT.V_SCROLL);
+				| SWT.V_SCROLL|SWT.FULL_SELECTION);
 		Table table = viewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		
-		TableColumn tableColumn = new TableColumn(table, SWT.NONE);
-		tableColumn.setWidth(100);
-		tableColumn.setText("\u9879\u76EE\u7F16\u53F7");
-		
-		TableColumn tableColumn_1 = new TableColumn(table, SWT.NONE);
-		tableColumn_1.setWidth(100);
-		tableColumn_1.setText("\u7533\u62A5\u65E5\u671F");
-		
-		TableColumn tableColumn_2 = new TableColumn(table, SWT.NONE);
-		tableColumn_2.setWidth(100);
-		tableColumn_2.setText("\u9879\u76EE\u540D\u79F0");
-		
-		TableColumn tableColumn_3 = new TableColumn(table, SWT.NONE);
-		tableColumn_3.setWidth(100);
-		tableColumn_3.setText("\u9879\u76EE\u5F00\u59CB\u65F6\u95F4");
-		
-		TableColumn tableColumn_4 = new TableColumn(table, SWT.NONE);
-		tableColumn_4.setWidth(100);
-		tableColumn_4.setText("\u9879\u76EE\u7ED3\u675F\u65F6\u95F4");
+		for (int i = 0; i < COLUMN_NAMES.length; i++) {
+			
+			TableColumn tableColumn = new TableColumn(table, SWT.NONE);
+			tableColumn.setWidth(100);
+			tableColumn.setText(COLUMN_NAMES[i]);
+			tableColumn.setMoveable(true);
+		}
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
 		// Provide the input to the ContentProvider
-		viewer.setInput(new String[] {"One", "Two", "Three"});
+		viewer.setInput(ResearchProjectManager.getManager().getRProjects());
 	}
+
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
 		viewer.getControl().setFocus();
+	}
+
+
+	/**
+	 * @return the viewer
+	 */
+	public TableViewer getViewer() {
+		return viewer;
 	}
 }

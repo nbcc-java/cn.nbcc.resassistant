@@ -2,29 +2,38 @@ package cn.nbcc.resassistant.model;
 
 import java.util.Date;
 
-public class RProject {
+import cn.nbcc.resassistant.utils.ContextConstants;
+
+public class ResearchProject {
 	
-	static RProject[] NONE = new RProject[]{};
+	static ResearchProject[] NONE = new ResearchProject[]{};
 	private String srcPath;		//申报项目的源文件夹路径
 	private Date startDate;		//项目开始时间
 	private Date endDate;		//项目结束时间
 	private Date deadlineDate;	//项目申报截止时间
-	private PStatus status;
+	private ResearchProjectStatus status;
 	private String title;		//项目名称
 	private String id;			//项目编号
+	private Contactor[] contactors;
+	
 
 	
-	public RProject() {
+	public ResearchProject() {
 		startDate = new Date();
-		status = PStatus.APPLYING;
-		title = "UnKnown";
-		id = "Unknown";
+		status = ResearchProjectStatus.APPLYING;
+		title = id = ContextConstants.UNKNOWN;
+		srcPath="";
 	}
 
-	public RProject(String title, Date deadline) {
+	public ResearchProject(String title, Date deadline) {
 		this();
 		this.title = title;
 		this.deadlineDate = deadline;
+	}
+
+	public ResearchProject(String id, String title, Date deadline) {
+		this(title,deadline);
+		this.id = id;
 	}
 
 	/**
@@ -86,14 +95,14 @@ public class RProject {
 	/**
 	 * @return the status
 	 */
-	public PStatus getStatus() {
+	public ResearchProjectStatus getStatus() {
 		return status;
 	}
 
 	/**
 	 * @param status the status to set
 	 */
-	public void setStatus(PStatus status) {
+	public void setStatus(ResearchProjectStatus status) {
 		this.status = status;
 	}
 
@@ -123,6 +132,21 @@ public class RProject {
 	 */
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Contactor[] getContactors() {
+		return contactors;
+	}
+	
+	public Contactor getFirstContactor(){
+		if (getContactors()!=null) {
+			return getContactors()[0];
+		}
+		return null;
+	}
+
+	public void setContactor(Contactor[] contactors) {
+		this.contactors = contactors;
 	}
 	
 	

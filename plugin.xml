@@ -50,13 +50,103 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               label="File">
+               label="文件">
             <command
                   commandId="org.eclipse.ui.file.exit"
-                  label="Exit">
+                  label="退出">
             </command>
          </menu>
       </menuContribution>
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="cn.nbcc.resassistant.menus.functionMenu"
+               label="项目管理"
+               mnemonic="M">
+            <command
+                  commandId="cn.nbcc.resassistant.commands.addProjectCommand"
+                  id="cn.nbcc.resassistant.menus.functionCommand"
+                  mnemonic="S">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               label="联系人管理">
+            <command
+                  commandId="cn.nbcc.resassistant.commands.addContactorCommand"
+                  label="添加联系人"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="cn.nbcc.resassistant.toolbars.rpToolbar">
+            <command
+                  commandId="cn.nbcc.resassistant.commands.addProjectCommand"
+                  icon="icons/sample.gif"
+                  id="cn.nbcc.resassistant.toolbars.addProjectCommand"
+                  tooltip="添加新项目">
+            </command>
+            <command
+                  commandId="cn.nbcc.resassistant.commands.addContactorCommand"
+                  icon="icons/alt_window_16.gif"
+                  id="cn.nbcc.resassistant.toolbars.addContactorCommand"
+                  tooltip="添加联系人">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="cn.nbcc.resassistant.handlers.AddProjectHandler"
+            commandId="cn.nbcc.resassistant.commands.addProjectCommand">
+      </handler>
+      <handler
+            class="cn.nbcc.resassistant.handlers.AddContactorHandler"
+            commandId="cn.nbcc.resassistant.commands.addContactorCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="cn.nbcc.resassistant.commands.addProjectCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+6">
+      </key>
+      <key
+            commandId="cn.nbcc.resassistant.commands.addContactorCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+1">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="cn.nbcc.resassistant.categorys.projectCategory"
+            name="项目管理">
+      </category>
+      <command
+            categoryId="cn.nbcc.resassistant.categorys.projectCategory"
+            id="cn.nbcc.resassistant.commands.addProjectCommand"
+            name="添加新科研项目">
+      </command>
+      <command
+            categoryId="cn.nbcc.resassistant.categorys.contactorCategory"
+            id="cn.nbcc.resassistant.commands.addContactorCommand"
+            name="添加联系人">
+      </command>
+      <category
+            id="cn.nbcc.resassistant.categorys.contactorCategory"
+            name="联系人管理">
+      </category>
    </extension>
 
 </plugin>
